@@ -16,12 +16,13 @@ var renderCloud = function (ctx, x, y, color) {
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
 };
 
-/* function randColor() {
-  var r = Math.floor(Math.random() * (0)),
-      g = Math.floor(Math.random() * (0)),
-        b = Math.floor(Math.random() * (255));
-    return '#' + r.toString(16) + g.toString(16) + b.toString(16);
-}*/
+var getPlayerColor = function (name) {
+  if (name === 'Вы') {
+    return 'rgba(255, 0, 0, 1)';
+  } else {
+    return ['rgb(0, 0, ', (Math.random() * 255).toFixed(0), ')'].join('');
+  }
+};
 
 /* var getMaxElement = function (arr) {
   var maxElement = arr[0];
@@ -35,23 +36,26 @@ var renderCloud = function (ctx, x, y, color) {
   return maxElement;
 }; */
 
-window.renderStatistics = function (ctx, players) {
-  renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
-  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
-
+window.renderTitle = function (ctx) {
   ctx.font = '16px PT Mono';
   ctx.textBaseline = 'hanging';
   ctx.fillStyle = 'black';
   ctx.fillText('Ура! Вы победили!', CLOUD_X + GAP + FONT_GAP, CLOUD_Y + GAP + FONT_GAP);
   ctx.fillText('Список результатов:', CLOUD_X + GAP + FONT_GAP, CLOUD_Y + GAP + FONT_GAP * 2);
+};
 
-  ctx.fillStyle = 'randColor';
+window.renderCharts = function (ctx, names) {
+  for (var i = 0; i < names.length; i++) {
+
+    ctx.fillText(names[i], CLOUD_X + TEXT_WIDTH + (BAR_WIDTH + BAR_GAP) * i, CLOUD_Y + CLOUD_HEIGHT - FONT_GAP);
+    ctx.fillRect(CLOUD_X + TEXT_WIDTH + (BAR_WIDTH + BAR_GAP) * i, CLOUD_Y + CLOUD_HEIGHT - BAR_HEIGHT - FONT_GAP, BAR_WIDTH, BAR_HEIGHT);
+    ctx.fillStyle = getPlayerColor(names[i]);
+  }
+};
+
+window.renderStatistics = function (ctx) {
+  renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
+  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
   /* var maxTime = getMaxElement(times);*/
-
-  for (var i = 0; i < players.length; i++) {
-
-    ctx.fillText(players[i], CLOUD_X + TEXT_WIDTH + (BAR_WIDTH + BAR_GAP) * i, CLOUD_Y + CLOUD_HEIGHT - FONT_GAP);
-    ctx.fillRect(CLOUD_X + TEXT_WIDTH + (BAR_WIDTH + BAR_GAP) * i, CLOUD_Y + CLOUD_HEIGHT - BAR_HEIGHT - FONT_GAP, BAR_WIDTH, BAR_HEIGHT);
-  }
 };
