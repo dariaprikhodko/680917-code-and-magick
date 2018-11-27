@@ -53,11 +53,11 @@ var renderCharts = function (ctx, names) {
   }
 };
 
-window.renderStatistics = function (ctx) {
+window.renderStatistics = function (ctx, names) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
   renderTitle(ctx);
-  renderCharts(ctx);
+  renderCharts(ctx, names);
 
   /* var maxTime = getMaxElement(times);*/
 };
