@@ -36,7 +36,7 @@ var getPlayerColor = function (name) {
   return maxElement;
 }; */
 
-window.renderTitle = function (ctx) {
+var renderTitle = function (ctx) {
   ctx.font = '16px PT Mono';
   ctx.textBaseline = 'hanging';
   ctx.fillStyle = 'black';
@@ -44,7 +44,7 @@ window.renderTitle = function (ctx) {
   ctx.fillText('Список результатов:', CLOUD_X + GAP + FONT_GAP, CLOUD_Y + GAP + FONT_GAP * 2);
 };
 
-window.renderCharts = function (ctx, names) {
+var renderCharts = function (ctx, names) {
   for (var i = 0; i < names.length; i++) {
 
     ctx.fillText(names[i], CLOUD_X + TEXT_WIDTH + (BAR_WIDTH + BAR_GAP) * i, CLOUD_Y + CLOUD_HEIGHT - FONT_GAP);
@@ -56,6 +56,8 @@ window.renderCharts = function (ctx, names) {
 window.renderStatistics = function (ctx) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
+  renderTitle(ctx);
+  renderCharts(ctx);
 
   /* var maxTime = getMaxElement(times);*/
 };
