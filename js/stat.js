@@ -43,9 +43,13 @@ var renderCharts = function (ctx, names, times, maxTime) {
   for (var i = 0; i < names.length; i++) {
     var columnHeight = step * times[i];
 
+    ctx.fillStyle = 'black';
+
     ctx.fillText(names[i], CLOUD_X + TEXT_WIDTH + (BAR_WIDTH + BAR_GAP) * i, CLOUD_Y + CLOUD_HEIGHT - FONT_GAP);
 
     var columnY = ctx.canvas.clientHeight - columnHeight - 60;
+
+    ctx.fillStyle = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255,' + Math.random() + ')';
 
     ctx.fillRect(
         CLOUD_X + TEXT_WIDTH + (BAR_WIDTH + BAR_GAP) * i,
@@ -53,8 +57,6 @@ var renderCharts = function (ctx, names, times, maxTime) {
         BAR_WIDTH,
         columnHeight
     );
-
-    ctx.fillStyle = (name[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255,' + Math.random() + ')';
   }
 };
 
