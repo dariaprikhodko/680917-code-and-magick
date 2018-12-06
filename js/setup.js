@@ -18,15 +18,14 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
 
 var generateWizards = function () {
   var wizards = [];
-  for (var i = 0; i < wizards.length; i++) {
+  for (var i = 0; i < 4; i++) {
     wizards.push({
       name: WIZARD_NAMES[Math.floor(Math.random() * 6)] + ' ' + WIZARD_SURNAMES[Math.floor(Math.random() * 6)],
       coatColor: COAT_COLOR[Math.floor(Math.random() * 6)],
       eyesColor: EYES_COLOR[Math.floor(Math.random() * 5)]
     });
-    return wizards;
   }
-  return generateWizards;
+  return wizards;
 };
 
 var renderWizard = function (wizard) {
