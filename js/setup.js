@@ -2,8 +2,13 @@
 
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
+var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var WIZARDS_AMOUNT = 4;
+
+var similarWizardTemplate = document.querySelector('#similar-wizard-template')
+    .content
+    .querySelector('.setup-similar-item');
 
 var userDialogElement = document.querySelector('.setup');
 var similarListElement = userDialogElement.querySelector('.setup-similar-list');
@@ -12,17 +17,18 @@ var showUserDialog = function () {
   userDialogElement.classList.remove('hidden');
 };
 
-var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-    .content
-    .querySelector('.setup-similar-item');
+var getRandomNum = function (array) {
+  var index = Math.floor(Math.random() * array.length);
+  return array[index];
+};
 
 var generateWizards = function () {
   var wizards = [];
-  for (var i = 0; i < 4; i++) {
+  for (var i = 0; i < WIZARDS_AMOUNT; i++) {
     wizards.push({
-      name: WIZARD_NAMES[Math.floor(Math.random() * 6)] + ' ' + WIZARD_SURNAMES[Math.floor(Math.random() * 6)],
-      coatColor: COAT_COLOR[Math.floor(Math.random() * 6)],
-      eyesColor: EYES_COLOR[Math.floor(Math.random() * 5)]
+      name: getRandomNum(WIZARD_NAMES) + ' ' + getRandomNum(WIZARD_SURNAMES),
+      coatColor: getRandomNum(COAT_COLORS),
+      eyesColor: getRandomNum(EYES_COLORS)
     });
   }
   return wizards;
@@ -52,8 +58,8 @@ var showSetupSimilar = function () {
 
 var init = function () {
   showUserDialog();
-  var wizards = generateWizards();
-  renderWizards(wizards);
+  var wizardList = generateWizards();
+  renderWizards(wizardList);
   showSetupSimilar();
 };
 
