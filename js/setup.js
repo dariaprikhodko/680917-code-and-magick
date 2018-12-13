@@ -13,10 +13,6 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
 var userDialogElement = document.querySelector('.setup');
 var similarListElement = userDialogElement.querySelector('.setup-similar-list');
 
-var showUserDialog = function () {
-  userDialogElement.classList.remove('hidden');
-};
-
 var getRandomNum = function (array) {
   var index = Math.floor(Math.random() * array.length);
   return array[index];
@@ -57,7 +53,6 @@ var showSetupSimilar = function () {
 };
 
 var init = function () {
-  showUserDialog();
   var wizardList = generateWizards();
   renderWizards(wizardList);
   showSetupSimilar();
@@ -69,7 +64,7 @@ init();
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-var userNameInput = document.querySelector('.setup-user-name');
+var userNameInputElement = document.querySelector('.setup-user-name');
 
 // для смены цвета по клику нужно обозначить скрытые DOM элементы формы ввода .wizard-coat, .wizard-eyes, .setup-fireball-wrap
 var inputWizardCoat = document.querySelector('input[name=coat-color]');
@@ -85,42 +80,40 @@ var wizardFireballElement = document.querySelector('.setup-fireball-wrap');
 // Нажатие на элемент .setup-open удаляет класс hidden
 // у блока setup. Нажатие на элемент .setup-close, расположенный
 // внутри блока setup возвращает ему класс hidden.
-var setup = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setupClose = setup.querySelector('.setup-close');
-
+var setupOpenElement = document.querySelector('.setup-open');
+var setupCloseElement = userDialogElement.querySelector('.setup-close');
 
 var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE && userNameInput !== document.activeElement) {
+  if (evt.keyCode === ESC_KEYCODE && userNameInputElement !== document.activeElement) {
     closePopup();
   }
 };
 
 var openPopup = function () {
-  setup.classList.remove('hidden');
+  userDialogElement.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
 };
 
 var closePopup = function () {
-  setup.classList.add('hidden');
+  userDialogElement.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-setupOpen.addEventListener('click', function () {
+setupOpenElement.addEventListener('click', function () {
   openPopup();
 });
 
-setupOpen.addEventListener('keydown', function (evt) {
+setupOpenElement.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     openPopup();
   }
 });
 
-setupClose.addEventListener('click', function () {
+setupCloseElement.addEventListener('click', function () {
   closePopup();
 });
 
-setupClose.addEventListener('keydown', function (evt) {
+setupCloseElement.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
