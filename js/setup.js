@@ -13,10 +13,6 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
 var userDialogElement = document.querySelector('.setup');
 var similarListElement = userDialogElement.querySelector('.setup-similar-list');
 
-var showUserDialog = function () {
-  userDialogElement.classList.remove('hidden');
-};
-
 var getRandomNum = function (array) {
   var index = Math.floor(Math.random() * array.length);
   return array[index];
@@ -57,10 +53,84 @@ var showSetupSimilar = function () {
 };
 
 var init = function () {
-  showUserDialog();
   var wizardList = generateWizards();
   renderWizards(wizardList);
   showSetupSimilar();
 };
 
 init();
+
+
+// module4-task1
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+var userNameInputElement = document.querySelector('.setup-user-name');
+
+// для смены цвета по клику нужно обозначить скрытые DOM элементы формы ввода .wizard-coat, .wizard-eyes, .setup-fireball-wrap
+var inputWizardCoat = document.querySelector('input[name=coat-color]');
+var inputWizardEyes = document.querySelector('input[name=eyes-color]');
+var inputWizardFireball = document.querySelector('input[name=fireball-color]');
+
+// для смены цвета по клику находим DOM элементы по классу
+var wizardCoatElement = document.querySelector('.wizard-coat');
+var wizardEyesElement = document.querySelector('.wizard-eyes');
+var wizardFireballElement = document.querySelector('.setup-fireball-wrap');
+
+
+// Нажатие на элемент .setup-open удаляет класс hidden
+// у блока setup. Нажатие на элемент .setup-close, расположенный
+// внутри блока setup возвращает ему класс hidden.
+var setupOpenElement = document.querySelector('.setup-open');
+var setupCloseElement = userDialogElement.querySelector('.setup-close');
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE && userNameInputElement !== document.activeElement) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  userDialogElement.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  userDialogElement.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+setupOpenElement.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpenElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupCloseElement.addEventListener('click', function () {
+  closePopup();
+});
+
+setupCloseElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+// функция по смене цвета
+// функция берет на вход DOM элемент, навешивает на него обработчик событий по клику, после клика генерируется случайный цвет
+// которым заливается фон, скрытая форма ввода
+var chooseRandColor = function (element, attribute, colors, input) {
+  element.addEventListener('click', function () {
+    var randColor = getRandomNum(colors);
+    element.style[attribute] = randColor;
+    input.value = randColor;
+  });
+};
+
+chooseRandColor(wizardCoatElement, 'fill', COAT_COLORS, inputWizardCoat);
+chooseRandColor(wizardEyesElement, 'fill', EYES_COLORS, inputWizardEyes);
+chooseRandColor(wizardFireballElement, 'background', FIREBALL_COLORS, inputWizardFireball);
