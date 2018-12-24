@@ -74,7 +74,7 @@ var artifactsElement = document.querySelector('.setup-artifacts');
 
 })();
 
-// артефакты и рюкзак
+// описывается функционал перетаскивания элементов из рюкзака
 shopElement.addEventListener('dragstart', function (evt) {
   if (evt.target.tagName.toLowerCase() === 'img') {
     draggedItem = evt.target;
