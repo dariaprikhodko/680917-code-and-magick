@@ -1,13 +1,16 @@
 'use strict';
 
-var ESC_KEYCODE = 27;
-
 (function () {
+  var ESC_KEYCODE = 27;
 
   var setupDialogElement = document.querySelector('.setup');
   var dialogHandler = setupDialogElement.querySelector('.upload');
   var submitElement = document.querySelector('.setup-submit');
   var closeElement = document.querySelector('.setup-close');
+
+  var shopElement = document.querySelector('.setup-artifacts-shop');
+  var draggedItem = null;
+  var artifactsElement = document.querySelector('.setup-artifacts');
 
   // обработаем событие начала перетаскивания нашего диалога mousedown
   dialogHandler.addEventListener('mousedown', function (evt) {
@@ -77,14 +80,7 @@ var ESC_KEYCODE = 27;
   };
   document.addEventListener('keydown', onEscCLoseDialog);
 
-})();
-
-// описывается функционал перетаскивания элементов из рюкзака
-(function () {
-
-  var shopElement = document.querySelector('.setup-artifacts-shop');
-  var draggedItem = null;
-  var artifactsElement = document.querySelector('.setup-artifacts');
+  // описывается функционал перетаскивания элементов из рюкзака
   shopElement.addEventListener('dragstart', function (evt) {
     if (evt.target.tagName.toLowerCase() === 'img') {
       draggedItem = evt.target;
@@ -102,7 +98,6 @@ var ESC_KEYCODE = 27;
     evt.target.appendChild(draggedItem);
   });
 
-
   artifactsElement.addEventListener('dragenter', function (evt) {
     evt.target.style.backgroundColor = 'yellow';
     evt.preventDefault();
@@ -112,4 +107,5 @@ var ESC_KEYCODE = 27;
     evt.target.style.backgroundColor = '';
     evt.preventDefault();
   });
+
 })();
