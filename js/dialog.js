@@ -1,16 +1,11 @@
 'use strict';
 
 (function () {
-  var ESC_KEYCODE = 27;
 
   var setupDialogElement = document.querySelector('.setup');
   var dialogHandler = setupDialogElement.querySelector('.upload');
   var submitElement = document.querySelector('.setup-submit');
   var closeElement = document.querySelector('.setup-close');
-
-  var shopElement = document.querySelector('.setup-artifacts-shop');
-  var draggedItem = null;
-  var artifactsElement = document.querySelector('.setup-artifacts');
 
   // обработаем событие начала перетаскивания нашего диалога mousedown
   dialogHandler.addEventListener('mousedown', function (evt) {
@@ -74,38 +69,8 @@
   closeElement.addEventListener('click', onCloseDialog);
 
   var onEscCLoseDialog = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      onCloseDialog();
-    }
+    window.util.isEscEvent(evt, onCloseDialog);
   };
   document.addEventListener('keydown', onEscCLoseDialog);
-
-  // описывается функционал перетаскивания элементов из рюкзака
-  shopElement.addEventListener('dragstart', function (evt) {
-    if (evt.target.tagName.toLowerCase() === 'img') {
-      draggedItem = evt.target;
-      evt.dataTransfer.setData('text/plain', evt.target.alt);
-    }
-  });
-
-  artifactsElement.addEventListener('dragover', function (evt) {
-    evt.preventDefault();
-    return false;
-  });
-
-  artifactsElement.addEventListener('drop', function (evt) {
-    evt.target.style.backgroundColor = '';
-    evt.target.appendChild(draggedItem);
-  });
-
-  artifactsElement.addEventListener('dragenter', function (evt) {
-    evt.target.style.backgroundColor = 'yellow';
-    evt.preventDefault();
-  });
-
-  artifactsElement.addEventListener('dragleave', function (evt) {
-    evt.target.style.backgroundColor = '';
-    evt.preventDefault();
-  });
 
 })();
