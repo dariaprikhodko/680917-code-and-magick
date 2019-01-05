@@ -29,27 +29,61 @@
     var wizardElement = similarWizardTemplate.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
     wizardElement.querySelector('.wizard-eyes').style.fill = wizard.coatColor;
 
     return wizardElement;
   };
 
-  var renderWizards = function (wizards) {
+  window.backend.load(function (wizards) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < wizards.length; i++) {
+
+    for (var i = 0; i < 4; i++) {
       fragment.appendChild(renderWizard(wizards[i]));
     }
     similarListElement.appendChild(fragment);
-  };
+  });
 
   var showSetupSimilar = function () {
     userDialogElement.querySelector('.setup-similar').classList.remove('hidden');
   };
 
+  var form = userDialogElement.querySelector('.setup-wizard-form');
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), function () {
+      userDialogElement.classList.add('hidden');
+    });
+    evt.preventDefault();
+  });
+
+  var successHandler = function (wizards) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < 4; i++) {
+      fragment.appendChild(renderWizard(wizards[i]));
+    }
+    similarListElement.appendChild(fragment);
+
+    userDialogElement.querySelector('.setup-similar').classList.remove('hidden');
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(successHandler, errorHandler);
+
   var init = function () {
     var wizardList = generateWizards();
-    renderWizards(wizardList);
+    window.backend.load(wizardList);
     showSetupSimilar();
   };
 
@@ -95,5 +129,9 @@
   setupCloseElement.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, closePopup);
   });
+
+  window.setup = {
+    userDialogElement: userDialogElement
+  };
 
 })();
