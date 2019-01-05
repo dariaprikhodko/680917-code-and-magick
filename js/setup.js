@@ -2,8 +2,6 @@
 
 (function () {
 
-  var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
   var WIZARDS_AMOUNT = 4;
 
   var similarWizardTemplate = document.querySelector('#similar-wizard-template')
@@ -12,18 +10,6 @@
 
   var userDialogElement = document.querySelector('.setup');
   var similarListElement = userDialogElement.querySelector('.setup-similar-list');
-
-  var generateWizards = function () {
-    var wizards = [];
-    for (var i = 0; i < WIZARDS_AMOUNT; i++) {
-      wizards.push({
-        name: window.util.getRandomNum(WIZARD_NAMES) + ' ' + window.util.getRandomNum(WIZARD_SURNAMES),
-        coatColor: window.util.getRandomNum(window.util.COAT_COLORS),
-        eyesColor: window.util.getRandomNum(window.util.EYES_COLORS)
-      });
-    }
-    return wizards;
-  };
 
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
@@ -35,15 +21,6 @@
     return wizardElement;
   };
 
-  window.backend.load(function (wizards) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < 4; i++) {
-      fragment.appendChild(renderWizard(wizards[i]));
-    }
-    similarListElement.appendChild(fragment);
-  });
-
   var showSetupSimilar = function () {
     userDialogElement.querySelector('.setup-similar').classList.remove('hidden');
   };
@@ -52,14 +29,14 @@
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), function () {
       userDialogElement.classList.add('hidden');
-    });
+    }, errorHandler);
     evt.preventDefault();
   });
 
   var successHandler = function (wizards) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < WIZARDS_AMOUNT; i++) {
       fragment.appendChild(renderWizard(wizards[i]));
     }
     similarListElement.appendChild(fragment);
@@ -79,11 +56,8 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.backend.load(successHandler, errorHandler);
-
   var init = function () {
-    var wizardList = generateWizards();
-    window.backend.load(wizardList);
+    window.backend.load(successHandler, errorHandler);
     showSetupSimilar();
   };
 
